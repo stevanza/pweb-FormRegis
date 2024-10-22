@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Registrasi Mahasiswa</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #1a73e8;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 2px rgba(26,115,232,0.2);
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #1557b0;
+        }
+
+        .required {
+            color: red;
+            margin-left: 3px;
+        }
+
+        /* Styles untuk autocomplete */
+        .autocomplete-items {
+            position: absolute;
+            border: 1px solid #ddd;
+            border-top: none;
+            z-index: 99;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: white;
+            border-radius: 0 0 4px 4px;
+        }
+
+        .autocomplete-items div {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .autocomplete-items div:hover {
+            background-color: #e9e9e9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Form Registrasi Mahasiswa</h2>
+        <form id="registrationForm" action="#" method="POST">
+            <div class="form-group">
+                <label for="nama">Nama Mahasiswa<span class="required">*</span></label>
+                <input type="text" id="nama" name="nama" required placeholder="Masukkan nama mahasiswa">
+                <div id="autocomplete-list" class="autocomplete-items"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="nim">NIM<span class="required">*</span></label>
+                <input type="text" id="nim" name="nim" required placeholder="Masukkan NIM">
+            </div>
+
+            <div class="form-group">
+                <label for="matakuliah">Mata Kuliah<span class="required">*</span></label>
+                <select id="matakuliah" name="matakuliah" required>
+                    <option value="">Pilih mata kuliah</option>
+                    <option value="pemrograman_web">Pemrograman Web</option>
+                    <option value="basis_data">Basis Data</option>
+                    <option value="algoritma">Algoritma dan Pemrograman</option>
+                    <option value="matematika">Matematika Diskrit</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="dosen">Dosen<span class="required">*</span></label>
+                <select id="dosen" name="dosen" required>
+                    <option value="">Pilih dosen</option>
+                    <option value="dr_budi">Dr. Budi Santoso</option>
+                    <option value="dr_ani">Dr. Ani Wijaya</option>
+                    <option value="prof_dedi">Prof. Dedi Sutanto</option>
+                    <option value="dr_siti">Dr. Siti Aminah</option>
+                </select>
+            </div>
+
+            <button type="submit">Daftar</button>
+        </form>
+    </div>
+
+    <script>
+        // Data contoh untuk autocomplete nama mahasiswa
+        const namaMahasiswa = [
+            "Ahmad Rizki",
+            "Budi Santoso",
+            "Citra Dewi",
+            "Dewi Putri",
+            "Erik Kurniawan",
+            "Fitri Handayani",
+            "Galih Pratama",
+            "Handi Susanto",
+            "Indah Permata",
+            "Joko Widodo"
+        ];
+
+        const namaInput = document.getElementById("nama");
+        const autocompleteList = document.getElementById("autocomplete-list");
+
+        namaInput.addEventListener("input", function(e) {
+            const inputValue = this.value.toLowerCase();
+            autocompleteList.innerHTML = "";
+
+            if (inputValue.length === 0) {
+                autocompleteList.style.display = "none";
+                return;
+            }
+
+            const filteredNames = namaMahasiswa.filter(name => 
+                name.toLowerCase().includes(inputValue)
+            );
+
+            if (filteredNames.length > 0) {
+                autocompleteList.style.display = "block";
+                filteredNames.forEach(name => {
+                    const div = document.createElement("div");
+                    div.innerHTML = name;
+                    div.addEventListener("click", function() {
+                        namaInput.value = name;
+                        autocompleteList.style.display = "none";
+                    });
+                    autocompleteList.appendChild(div);
+                });
+            } else {
+                autocompleteList.style.display = "none";
+            }
+        });
+
+        document.addEventListener("click", function(e) {
+            if (e.target !== namaInput) {
+                autocompleteList.style.display = "none";
+            }
+        });
+
+        document.getElementById("registrationForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            alert("Form berhasil disubmit!");
+            this.reset();
+        });
+    </script>
+</body>
+</html>
